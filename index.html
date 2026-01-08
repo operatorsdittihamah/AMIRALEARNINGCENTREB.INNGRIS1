@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amira Learning Centre - English Test Grade 4</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI,Arial;
+  background:linear-gradient(135deg,#2b0979,#1b262c);
+  color:#ffffff;
+}
+.container{max-width:1100px;margin:auto;padding:20px}
+h1{text-align:center}
+
+.question-box{
+  background:#440557;
+  padding:25px;
+  border-radius:16px;
+}
+
+.question{font-size:24px;margin-bottom:20px}
+
+.options{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+
+.option{
+  padding:18px;
+  font-size:20px;
+  border-radius:14px;
+  cursor:pointer;
+  text-align:center;
+  font-weight:bold;
+}
+
+.a{background:#3282b8}
+.b{background:#0f8b8d}
+.c{background:#f6c90e;color:#000}
+.d{background:#eb5e28}
+
+.option.correct{background:#2ecc71!important}
+.option.wrong{background:#e74c3c!important}
+
+.next-btn{
+  margin-top:20px;
+  padding:15px 30px;
+  font-size:20px;
+  border:none;
+  border-radius:12px;
+  background:#00b4d8;
+  color:#fff;
+  cursor:pointer;
+}
+
+.score-box{font-size:22px;margin-top:10px}
+
+.explanation{
+  display:none;
+  background:#14213d;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+
+.timer{text-align:center;font-size:22px;margin-bottom:10px}
+.progress{height:8px;background:#333;border-radius:5px;overflow:hidden}
+.bar{height:100%;background:#90e0ef;width:100%}
+
+.top-photo{
+  display:flex;
+  justify-content:center;
+  margin:20px 0;
+}
+.top-photo img{
+  max-width:300px;
+  border-radius:18px;
+  box-shadow:0 0 20px rgba(144,224,239,0.8);
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>ENGLISH HOTS QUIZ GRADE 4<br>AMIRA LEARNING CENTRE</h1>
+
+<div class="top-photo">
+  <img src="amira.png" alt="Amira Logo">
+</div>
+
+<div class="timer" id="timer">⏱ 01:00:00</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<div class="question" id="question"></div>
+<div class="options" id="options"></div>
+
+<button class="next-btn" onclick="nextQuestion()">Next Question</button>
+<button class="next-btn" onclick="prevQuestion()">⬅ Previous</button>
+
+<div class="score-box" id="scoreBox"></div>
+<div class="explanation" id="explanation"></div>
+</div>
+
+<audio id="soundTrue" src="correct.mp3"></audio>
+<audio id="soundFalse" src="incorrect.mp3"></audio>
+
+<script>
+// ================= ENGLISH HOTS GRADE 4 (40 QUESTIONS) =================
+const questions = [
+
+{q:"Read the text: 'Mrs. Nengsi Karoma waters the plants every morning.' What does Lina do?", 
+ options:["She cooks food","She waters plants","She cleans house","She feeds animals"], 
+ correct:1, solution:"The sentence says Lina waters the plants."},
+
+{q:"Which word is a verb?", 
+ options:["Apple","Run","Blue","Table"], 
+ correct:1, solution:"Run is an action (verb)."},
+
+{q:"Choose the correct sentence.", 
+ options:["She go to school","She goes to school","She going school","She gone school"], 
+ correct:1, solution:"Correct verb for 'she' is goes."},
+
+{q:"What is the opposite of 'big'?", 
+ options:["Long","Small","Tall","Wide"], 
+ correct:1, solution:"Opposite of big is small."},
+
+{q:"Ainun Lubna has 2 cats and 1 bird. How many animals does she have?", 
+ options:["1","2","3","4"], 
+ correct:2, solution:"2 cats + 1 dog = 3 animals."},
+
+{q:"Which sentence shows habit?", 
+ options:["I am eating now","I eat breakfast every day","I will eat later","I ate yesterday"], 
+ correct:1, solution:"Every day shows habit."},
+
+{q:"Choose the correct question word: '___ is your name?'", 
+ options:["Where","What","When","Why"], 
+ correct:1, solution:"What is used to ask name."},
+
+{q:"Which word has the same meaning as 'happy'?", 
+ options:["Sad","Angry","Glad","Tired"], 
+ correct:2, solution:"Glad means happy."},
+
+{q:"Read: 'The sun rises in the east.' This sentence is a ...", 
+ options:["Question","Command","Fact","Opinion"], 
+ correct:2, solution:"It is a fact."},
+
+{q:"Which one is a noun?", 
+ options:["Jump","Blue","Teacher","Quickly"], 
+ correct:2, solution:"Teacher is a noun."},
+
+// lanjut HOTS
+{q:"If today is Monday, what day comes after Tuesday?", 
+ options:["Monday","Wednesday","Thursday","Sunday"], 
+ correct:1, solution:"After Tuesday is Wednesday."},
+
+{q:"Which sentence is polite?", 
+ options:["Give me that!","I want it now!","Please help me","You must do it"], 
+ correct:2, solution:"Please help me is polite."},
+
+{q:"Choose the correct plural form of 'child'", 
+ options:["Childs","Childes","Children","Childrens"], 
+ correct:2, solution:"Plural of child is children."},
+
+{q:"What is the function of eyes?", 
+ options:["To hear","To smell","To see","To taste"], 
+ correct:2, solution:"Eyes are used to see."},
+
+{q:"Which word completes the sentence: 'I ___ a book now.'", 
+ options:["read","reads","am reading","reading"], 
+ correct:2, solution:"Now indicates present continuous."},
+
+{q:"Which one is an animal?", 
+ options:["Car","Chair","Elephant","Book"], 
+ correct:2, solution:"Elephant is an animal."},
+
+{q:"Read: 'The boy is taller than his sister.' Who is taller?", 
+ options:["Sister","Boy","Both","None"], 
+ correct:1, solution:"The boy is taller."},
+
+{q:"What should you do if you are late?", 
+ options:["Be silent","Say sorry","Run away","Get angry"], 
+ correct:1, solution:"Saying sorry is polite."},
+
+{q:"Which sentence uses 'can' correctly?", 
+ options:["I can to swim","I can swims","I can swim","I can swimming"], 
+ correct:2, solution:"Correct form is can + verb 1."},
+
+{q:"What is the main idea of this sentence: 'Birds can fly using their wings.'", 
+ options:["Birds are big","Birds have wings","Birds can fly","Birds are animals"], 
+ correct:2, solution:"Main idea is birds can fly."},
+
+{q:"Read the text: 'Mrs. Hani forgot to bring her umbrella. It is raining heavily.' What will likely happen?", 
+ options:["Mrs. Hani will stay dry","Ani will get wet","Mrs. Hani will sleep","Mrs. Hani will eat"], 
+ correct:1, solution:"Without an umbrella in heavy rain, Mrs. Hani will likely get wet."},
+
+{q:"Which sentence shows cause and effect?", 
+ options:["I like apples","It rained, so the road was wet","She is my friend","The cat is cute"], 
+ correct:1, solution:"Rain causes the road to be wet."},
+
+{q:"What should you do to keep the classroom clean?", 
+ options:["Throw trash anywhere","Clean only at home","Pick up trash","Ignore trash"], 
+ correct:2, solution:"Picking up trash keeps the classroom clean."},
+
+{q:"Read: 'Salim Syatiri studied hard for the test.' What is the best result?", 
+ options:["He will fail","He will be tired","He will get good score","He will be angry"], 
+ correct:2, solution:"Studying hard usually leads to good results."},
+
+{q:"Which sentence is an opinion?", 
+ options:["The sky is blue","Cats have four legs","I think math is fun","Water is liquid"], 
+ correct:2, solution:"An opinion shows personal feeling."},
+
+{q:"If you want to cross the road safely, what should you do?", 
+ options:["Run quickly","Close your eyes","Look left and right","Play on the road"], 
+ correct:2, solution:"Looking left and right helps safety."},
+
+{q:"Which word best completes: 'She was tired ___ she kept studying.'", 
+ options:["because","but","and","or"], 
+ correct:1, solution:"'But' shows contrast."},
+
+{q:"What lesson can you learn from helping others?", 
+ options:["Be selfish","Be lazy","Be kind","Be angry"], 
+ correct:2, solution:"Helping others teaches kindness."},
+
+{q:"Read: 'The glass fell and broke.' Why did it break?", 
+ options:["Because it was heavy","Because it fell","Because it was new","Because it was clean"], 
+ correct:1, solution:"The glass broke because it fell."},
+
+{q:"Which activity saves energy?", 
+ options:["Leaving lights on","Turning off unused lights","Watching TV all day","Opening fridge often"], 
+ correct:1, solution:"Turning off lights saves energy."},
+
+{q:"If a plant does not get water, what will happen?", 
+ options:["It grows fast","It stays green","It will wilt","It becomes bigger"], 
+ correct:2, solution:"Plants need water to live."},
+
+{q:"Which sentence best shows responsibility?", 
+ options:["Doing homework on time","Sleeping in class","Ignoring teacher","Coming late"], 
+ correct:0, solution:"Doing homework on time is responsible."},
+
+{q:"What should you do before borrowing something?", 
+ options:["Take it","Ask permission","Hide it","Break it"], 
+ correct:1, solution:"Asking permission is polite."},
+
+{q:"Read: 'The weather is very hot.' What should you wear?", 
+ options:["Jacket","Sweater","Light clothes","Raincoat"], 
+ correct:2, solution:"Light clothes are suitable for hot weather."},
+
+{q:"Which one helps you stay healthy?", 
+ options:["Eating junk food","Sleeping late","Exercising regularly","Never drinking water"], 
+ correct:2, solution:"Exercise helps keep the body healthy."},
+
+{q:"If you see someone being bullied, what should you do?", 
+ options:["Laugh","Join them","Ignore","Help or report"], 
+ correct:3, solution:"Helping or reporting is the right action."},
+
+{q:"Which sentence shows future plan?", 
+ options:["I eat rice","I am eating","I will eat","I ate"], 
+ correct:2, solution:"'Will eat' shows future."},
+
+{q:"Why should we read instructions before using something?", 
+ options:["To waste time","To look smart","To use it safely","To make noise"], 
+ correct:2, solution:"Instructions help us use things safely."},
+
+{q:"Read: 'Siti shares her food with her friend.' What trait does Siti show?", 
+ options:["Selfish","Kind","Lazy","Angry"], 
+ correct:1, solution:"Sharing shows kindness."},
+
+{q:"Which action shows honesty?", 
+ options:["Cheating in test","Lying to teacher","Admitting mistake","Taking others' things"], 
+ correct:2, solution:"Admitting mistakes shows honesty."}
+];
+
+
+// ========= LOGIC =========
+let index=0, score=0, locked=false;
+let totalTime=3600;
+const nilaiPerSoal=100/questions.length;
+
+const benar=document.getElementById("soundTrue");
+const salah=document.getElementById("soundFalse");
+
+function loadQuestion(){
+ locked=false;
+ document.getElementById("explanation").style.display="none";
+ document.getElementById("scoreBox").innerText="Score: "+score.toFixed(1);
+
+ const q=questions[index];
+ document.getElementById("question").innerText=(index+1)+". "+q.q;
+
+ const opt=document.getElementById("options");
+ opt.innerHTML="";
+ q.options.forEach((o,i)=>{
+  const d=document.createElement("div");
+  d.className="option "+["a","b","c","d"][i];
+  d.innerText=o;
+  d.onclick=()=>selectAnswer(d,i);
+  opt.appendChild(d);
+ });
+}
+
+function selectAnswer(el,i){
+ if(locked) return;
+ locked=true;
+ const q=questions[index];
+ document.querySelectorAll(".option")[q.correct].classList.add("correct");
+
+ if(i===q.correct){
+  score+=nilaiPerSoal;
+  benar.play();
+ }else{
+  el.classList.add("wrong");
+  salah.play();
+ }
+
+ const exp=document.getElementById("explanation");
+ exp.style.display="block";
+ exp.innerHTML="<b>Correct Answer:</b> "+q.options[q.correct]+"<br><b>Explanation:</b> "+q.solution;
+}
+
+function nextQuestion(){
+ if(index<questions.length-1){index++;loadQuestion();}
+ else finish();
+}
+function prevQuestion(){
+ if(index>0){index--;loadQuestion();}
+}
+
+function finish(){
+ document.getElementById("question").innerText="Quiz Finished 🎉";
+ document.getElementById("options").innerHTML="";
+ document.getElementById("scoreBox").innerHTML="FINAL SCORE: "+score.toFixed(1);
+}
+
+function updateTimer(){
+ let h=Math.floor(totalTime/3600);
+ let m=Math.floor((totalTime%3600)/60);
+ let s=totalTime%60;
+ document.getElementById("timer").innerText=
+ `⏱ ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+ document.getElementById("bar").style.width=(totalTime/3600*100)+"%";
+ totalTime--;
+ if(totalTime<0) finish();
+}
+
+setInterval(updateTimer,1000);
+loadQuestion();
+</script>
+</body>
+</html>
